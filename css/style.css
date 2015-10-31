@@ -1,0 +1,58 @@
+body {
+  background-color: white;
+}
+
+
+#mainMenu {
+  margin-bottom: 2em;
+}
+
+#interfaceContainer {
+   height: 100vh;
+}
+
+#builderContainer  {
+    height: -webkit-calc(100% - 64px);
+    height: calc(100% - (64px + 2em));
+}
+
+#playerFrameHeader {
+  border: thin solid gray;
+  border-bottom: none;
+  background-color: lightgray;
+  -webkit-border-top-left-radius: 12px;
+  -webkit-border-top-right-radius: 12px;
+  height: 40px;
+}
+
+#playerFrame {
+  border: thin solid gray;
+  height: calc( 100% - 50px);
+  background-color: white;
+}
+
+#playerControl {
+  padding-top: 1em;
+}
+
+#blocklyCol {
+  height: 100%;
+}
+
+#blocklyCol .row  {
+  height: 100%;
+}
+
+#blocklyDivHeader {
+  border: thin solid gray;
+  border-bottom: none;
+  background-color: lightgray;
+  -webkit-border-top-left-radius: 12px;
+  -webkit-border-top-right-radius: 12px;
+  height: 40px;
+}
+
+#blocklyDiv {
+  border: thin solid gray;
+  height: calc( 100% - 50px);
+}
