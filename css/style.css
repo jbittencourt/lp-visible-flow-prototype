@@ -16,22 +16,22 @@ body {
     height: calc(100% - (64px + 2em));
 }
 
-#playerFrameHeader {
-  border: thin solid gray;
+#stageFrameHeader {
+  border: thin solid #039be5 ;
   border-bottom: none;
-  background-color: lightgray;
+  background-color: #29b6f6;
   -webkit-border-top-left-radius: 12px;
   -webkit-border-top-right-radius: 12px;
   height: 40px;
 }
 
-#playerFrame {
-  border: thin solid gray;
+#stageFrame {
+  border: thin solid #039be5 ;
   height: calc( 100% - 50px);
   background-color: white;
 }
 
-#playerControl {
+#stageControl {
   padding-top: 1em;
 }
 
@@ -44,15 +44,22 @@ body {
 }
 
 #blocklyDivHeader {
-  border: thin solid gray;
+  border: thin solid #039be5 ;
   border-bottom: none;
-  background-color: lightgray;
+  background-color: #29b6f6;
   -webkit-border-top-left-radius: 12px;
   -webkit-border-top-right-radius: 12px;
   height: 40px;
 }
 
 #blocklyDiv {
-  border: thin solid gray;
+  border: thin solid #039be5 ;
   height: calc( 100% - 50px);
+}
+
+
+/* customize blockly elements */
+
+.blocklyToolboxDiv {
+  background-color: #b3e5fc !important;
 }
