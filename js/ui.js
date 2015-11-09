@@ -6,17 +6,54 @@ function getCurrentMicroworld() {
   return currentworld;
 }
 
+function setStepsLabel(steps) {
+  var stepsText = $("#stepsText");
+
+  if(stepsText!=null) {
+    stepsText.text(steps.toString()+" passo");
+    if(steps>1) {
+      stepsText.append("s");
+    }
+  }
+}
+
+function setCurrentStepLabel(steps) {
+  var stepsText = $("#stepsText");
+
+  if(stepsText!=null) {
+    stepsText.text("passo "+steps.toString());
+  }
+}
+
+function isTimeVisible() {
+  el = $("#isTimeVisible");
+
+  if(el!=null) {
+    return el.prop('checked');
+  }
+
+  return false;
+}
+
 //$(document).ready(function() {
 $(function() {
 
   $('#runButton').click( function() {
     currentworld.reset();
-    lpRunCode();
 
+    currentworld.setTimeVisibleMode(isTimeVisible());
+
+    lpRunCode();
     var runFrames = currentworld.getTotalTime();
+
+    currentworld.setPlayTime(runFrames-1);
+
+    setStepsLabel(runFrames);
+
 
     $("#programTimeSlider").slider( {
       "max": runFrames,
+      "value": runFrames,
       "disaled": false
     });
     console.log("Set slider to max "+runFrames.toString());
@@ -30,7 +67,9 @@ $(function() {
     "slide": slideTime
   });
 
-
+  $("#isTimeVisible").click(function() {
+    currentworld.setTimeVisibleMode(isTimeVisible());
+  })
 
   initUI();
 });
@@ -55,5 +94,7 @@ function initUI() {
 function slideTime(event, ui) {
     currentworld.setPlayTime(ui.value-1);
     lpHighlighBlockTime(ui.value-1);
+    setCurrentStepLabel(ui.value);
+
     currentworld.refresh();
 }

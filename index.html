@@ -58,14 +58,34 @@
                       <span data-l10n-id="no-canvas">Your browser does not support the canvas element - sorry!</span>
                     </canvas>
                 </div>
-                <div id="stageControl">
-                  <a class="btn-floating btn-large waves-effect waves-light red" id="runButton"><i class="material-icons">play_arrow</i></a>
-                </div>
+
 
               </div>
           </div>
+
           <div class="row">
-            <div class="col s12">
+              <div class="col s4">
+                <div id="stageControl">
+                  <a class="btn-floating btn-large waves-effect waves-light red" id="runButton"><i class="material-icons">play_arrow</i></a>
+                </div>
+              </div>
+              <div class="col s8">
+                  <form action="#">
+                      <div class="switch">
+                        Mostra passos:
+                        <label>
+                          Desligado<input id="isTimeVisible" type="checkbox">
+                          <span class="lever"></span>Ligado
+                        </label>
+                      </div>
+                  </form>
+              </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col s2" id="stepsText">0 passos</div>
+            <div class="col s10">
                <section>
                   <span class="tooltip"></span>
                   <div id="programTimeSlider"></div>

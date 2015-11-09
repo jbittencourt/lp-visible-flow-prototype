@@ -289,6 +289,8 @@ function Microworld(canvasElement, width, height) {
   };
 
   this.reset = function() {
+    turtleCanvas = canvasStoryStack[0];
+
     if(makeTimeVisibleMode) {
       //remove all canvases from the document so we don't overflow the memory
       canvasStoryStack.forEach(function(canvas) {
@@ -457,22 +459,20 @@ function Microworld(canvasElement, width, height) {
     var ctx = turtleCanvas_ctx;
 
     //Create 2 adictional canvas
-    if(makeTimeVisibleMode) {
-      var currentStotyStackPointer = canvasStoryStack.length;
+    currentStotyStackPointer = canvasStoryStack.length;
 
-      var previousCanvas = canvasStoryStack[currentStotyStackPointer-1]; //get last canvas
+    var previousCanvas = canvasStoryStack[currentStotyStackPointer-1]; //get last canvas
 
-      newTurtleCanvas = document.createElement("CANVAS");
-  		newTurtleCanvas.id = "mwTurtleCanvas_"+currentStotyStackPointer.toString();
-  		newTurtleCanvas.width = width;
-  		newTurtleCanvas.height = height;
-  		newTurtleCanvas.style.display = "none";
-  		document.body.appendChild(newTurtleCanvas);
-  		ctx = newTurtleCanvas.getContext('2d');
+    newTurtleCanvas = document.createElement("CANVAS");
+		newTurtleCanvas.id = "mwTurtleCanvas_"+currentStotyStackPointer.toString();
+		newTurtleCanvas.width = width;
+		newTurtleCanvas.height = height;
+		newTurtleCanvas.style.display = "none";
+		document.body.appendChild(newTurtleCanvas);
+		ctx = newTurtleCanvas.getContext('2d');
 
-      canvasStoryStack.push(newTurtleCanvas);
+    canvasStoryStack.push(newTurtleCanvas);
 
-    }
 
     // Erase turtle canvas content, but keeps its context
     turtleCanvas_ctx.clearRect(0, 0, width, height);
@@ -507,6 +507,11 @@ function Microworld(canvasElement, width, height) {
 
   this.getTotalTime = function() {
     return canvasStoryStack.length;
+  }
+
+  this.setTimeVisibleMode = function(visible) {
+    makeTimeVisibleMode = visible;
+    updateRenderCanvas();
   }
 
   function updateRenderCanvas() {
@@ -560,6 +565,8 @@ function Microworld(canvasElement, width, height) {
     var canvas = canvasStoryStack[time];
     var ctx = canvas.getContext("2d");
     ctx.globalAlpha = 1;
+
+    turtleCanvas = canvas;
 
     for(var i=0; i<time; i++) {
       canvas = canvasStoryStack[i];
