@@ -11,12 +11,10 @@
   <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 
-  <link href="js/jquery-ui/jquery-ui.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-
   <!-- Compiled and minified JavaScript -->
   <script src="js/jquery-2.1.4.min.js"></script>
   <script src="js/materialize.min.js"></script>
-  <script src="js/jquery-ui/jquery-ui.min.js"></script>
+
 
   <script src="js/JS-Interpreter/acorn_interpreter.js"></script>
   <script src="blockly/blockly_compressed.js"></script>
@@ -29,6 +27,7 @@
   <script src="js/LPBlocks.js"></script>
   <script src="js/microworld_procedural_bindings.js"></script>
   <script src="js/microworld.js"></script>
+  <script src="js/microworld_store.js"></script>
 
 
   <script src="js/ui.js"></script>
@@ -39,10 +38,10 @@
   <div id="interfaceContainer">
 
     <nav id="mainMenu" class="light-blue lighten-1" role="navigation">
-      <div class="nav-wrapper container">
+      <div class="nav-wrapper">
         <ul class="left hide-on-med-and-down">
-          <li><a href="#" id="save_button">Salvar</a></li>
-          <li><a href="#" id="load_button">Carregar</a></li>
+          <li><a href="#" id="save_button"><i class="material-icons left">publish</i> Salvar</a></li>
+          <li><a href="#" id="load_button"><i class="material-icons left">cloud_download</i>Carregar</a></li>
         </ul>
       </div>
     </nav>
@@ -54,12 +53,7 @@
               <div class="col s12">
                 <div id="stageFrameHeader"></div>
                 <div id="stageFrame">
-                    <!-- <canvas id="stage" width="550" height="350">
-                      <span data-l10n-id="no-canvas">Your browser does not support the canvas element - sorry!</span>
-                    </canvas> -->
                 </div>
-
-
               </div>
           </div>
 
@@ -84,15 +78,16 @@
 
 
           <div class="row">
-            <div class="col s2" id="stepsText">0 passos</div>
-            <div class="col s10">
-               <section>
-                  <span class="tooltip"></span>
-                  <div id="programTimeSlider"></div>
-                  <span class="volume"></span>
-              </section>
-            </div>
+              <div class="col s2" id="stepsText">0 passos</div>
+              <div class="col s10">
+                  <form action="#">
+                    <p class="range-field">
+                      <input type="range" id="programTimeSlider" min="0" max="100" />
+                    </p>
+                  </form>
+              </div>
           </div>
+
       </div>
 
       <div class="col s7" id="blocklyCol">

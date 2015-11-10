@@ -21,9 +21,18 @@
  *
  **/
 
-function Microworld(canvasElement, width, height) {
+function Microworld(canvasParentSelector,width, height) {
+
+  //init the turtle geometry microworldDiv
+  var canvasParent = $(canvasParentSelector);
   width = Number(width);
   height = Number(height);
+
+  canvasElement = document.createElement("CANVAS");
+  canvasElement.id = "microworldCavnas";
+  canvasElement.width = width;
+  canvasElement.height = height;
+  canvasParent.append(canvasElement);
 
 	var turtleCanvas = null;   //canvas elements
 	var turtleCanvas_ctx = null; //canvas context
@@ -666,18 +675,6 @@ function Microworld(canvasElement, width, height) {
   };
 
 
-  this.save = function() {
-    var xml = Blockly.Xml.workspaceToDom(workspace);
-    function saveFormat(name, author) {
-      this.name = name;
-      this.author = author;
-      this.code = Blockly.Xml.domToText(xml);
-    }
-
-    var saveObj = new saveFormat(this.microworldName, this.microworldAuthor) ;
-
-    return JSON.stringify(saveObj);
-  }
 
   init();
   this.render();

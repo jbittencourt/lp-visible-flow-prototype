@@ -2,6 +2,9 @@ var currentworld = null;
 var workspace = null;
 var myInterpreter = null;
 
+var currentworldFrameSelector = "#stageFrame";
+var currentworldHeigth = 350;
+
 function getCurrentMicroworld() {
   return currentworld;
 }
@@ -49,15 +52,16 @@ function executeCode() {
 
   setStepsLabel(runFrames);
 
-  $("#programTimeSlider").slider( {
-    "max": runFrames,
-    "value": runFrames,
-    "disaled": false
-  });
+  var slider = $("#programTimeSlider");
+  slider.attr("max", runFrames);
+  slider.attr("min", 1);
+  slider.attr("step", 1);
+  slider.val(runFrames);
+  slider.prop('disabled', false);
+
   console.log("Set slider to max "+runFrames.toString());
 }
 
-//$(document).ready(function() {
 $(function() {
 
   $('#runButton').click( function() {
@@ -65,12 +69,9 @@ $(function() {
   });
 
 
-  $("#programTimeSlider").slider({
-    "step": 1,
-    "min": 1,
-    "disaled": false,
-    "slide": slideTime
-  });
+  $("#programTimeSlider").prop('disabled', true);
+  $("#programTimeSlider").on("input",slideTime);
+
 
   $("#isTimeVisible").click(function() {
     currentworld.setTimeVisibleMode(isTimeVisible());
@@ -135,51 +136,27 @@ function initUI() {
   workspace.addChangeListener(lpParseCode);
 
   //init the turtle geometry microworldDiv
-  var canvasParent = $("#stageFrame");
+  var canvasParent = $(currentworldFrameSelector);
+  currentworld = new Microworld(currentworldFrameSelector, canvasParent.width(), currentworldHeigth);
 
-  stage = document.createElement("CANVAS");
-  stage.id = "stage";
-  stage.width = canvasParent.width();
-  stage.height = 350;
-  canvasParent.append(stage);
-
-  currentworld = new Microworld(stage, stage.width, stage.height);
   //currentworld.penup();
 }
 
-function slideTime(event, ui) {
-    currentworld.setPlayTime(ui.value-1);
-    lpHighlighBlockTime(ui.value-1);
-    setCurrentStepLabel(ui.value);
+function slideTime(event) {
+    var slider = $("#programTimeSlider");
+    currentworld.setPlayTime(slider.val()-1);
+    lpHighlighBlockTime(slider.val()-1);
+    setCurrentStepLabel(slider.val());
 
     currentworld.refresh();
 }
 
 
-function getSavedWorldsList() {
-  var worldsStr = window.localStorage.getItem("microworlds");
-  var worlds = new Array();
-  if(worldsStr!=null) {
-    worlds = JSON.parse(worldsStr);
-  }
 
-  return worlds;
-}
-
-function getSaveMicroworld(key) {
-    return JSON.parse(window.localStorage.getItem(key));
-}
-
-function save() {
-    $("#save_modal_save").click(modalSave);
-
-    if(currentworld.microworldName=="") {
-      $('#save_modal').openModal();
-    } else {
-      saveMicrowold();
-    }
-}
-
+/*****************************************************************************'
+ * SAVE AND RESTORE UI EVENTS AND FUNCTIONS
+ *
+ *****************************************************************************/
 function load() {
     var list = $("#microworlds_list"); //gets list element
     var worlds = getSavedWorldsList(); // load saved worlds
@@ -193,7 +170,8 @@ function load() {
          var str = '<li class="collection-item">'
               + '<span class="title">' + worldInfo.name +  '</span>'
               + '<p>Autor: ' + worldInfo.author
-              + '<a href="#!" class="secondary-content" data-key="'+item+'"><i class="material-icons">video_library</i></a>'
+              + '<a href="#!" class="secondary-content load-modal-item" data-key="'+item+'"><i class="material-icons">cloud_download</i></a>'
+              + '<a href="#!" class="secondary-content download-modal-item" data-key="'+item+'"><i class="material-icons">file_download</i></a>'
               + '</li>';
 
          list.append(str);
@@ -202,8 +180,56 @@ function load() {
     });
 
 
-    $("#load_modal_button").click(modalSave);
-    $('#load_modal').openModal({fullscreen: true});
+    $(".load-modal-item").click(modalLoad);
+    $(".download-modal-item").click(modalDownload);
+
+    $('#load_modal').openModal();
+}
+
+function modalLoad(event) {
+  var el = $(this);
+  var key = el.data("key");
+
+  if(key!=null) {
+    var worldInfo = getSaveMicroworld(key);
+
+    if(worldInfo!=null) {
+        restoreMicroworld(worldInfo);
+        $('#load_modal').closeModal();
+        Materialize.toast('Micro-mundo carregado com sucesso', 3000, 'rounded')
+        return true;
+    }
+  }
+
+  $('#load_modal').closeModal();
+  Materialize.toast('Opsss! Algum problema aconteu lendo seu micro mundo.', 3000, 'rounded')
+}
+
+function modalDownload(event) {
+  var el = $(this);
+  var key = el.data("key");
+
+  if(key!=null) {
+    var worldInfo = getSaveMicroworld(key);
+    var filename = ((worldInfo.name==null)?"Micromundo":worldInfo.name)+".mw";
+
+    if(worldInfo!=null) {
+      //this thing is really hard to get working and undocumented
+      //in the data, the comma marks where the download data will start. All other elements separated by ; are parameters
+      downloadDataURI($, {filename: filename,data:"data:application/octet-stream; charset=utf-16le; base64,"+encodeURIComponent(JSON.stringify(worldInfo))});
+    }
+  }
+}
+
+
+function save() {
+    $("#save_modal_save").click(modalSave);
+
+    if(currentworld.microworldName=="") {
+      $('#save_modal').openModal();
+    } else {
+      saveMicrowold();
+    }
 }
 
 function modalSave() {
@@ -216,20 +242,4 @@ function modalSave() {
     saveMicrowold();
     $('#save_modal').closeModal();
   }
-}
-
-function saveMicrowold() {
-  if(currentworld.microworldName!="") {
-      var worlds = getSavedWorldsList();
-
-      var key = "microwold_"+currentworld.microworldId;
-      window.localStorage.setItem(key, currentworld.save()) ;
-
-      if($.inArray(key, worlds)<0) {
-        worlds.push(key);
-        window.localStorage.setItem("microworlds", JSON.stringify(worlds)) ;
-      }
-    }
-    return false;
-
 }
