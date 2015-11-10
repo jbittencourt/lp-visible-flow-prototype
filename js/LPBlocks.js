@@ -228,30 +228,10 @@ function lpParseCode() {
   workspace.traceOn(true);
 
   workspace.highlightBlock(null);
-
 }
 
 
 function lpRunCode() {
   time_block_mapping = new Array(); //empties the time_block map
   myInterpreter.run();
-}
-
-function lpStepCode() {
-  try {
-    var ok = myInterpreter.step();
-  } finally {
-    if (!ok) {
-      // Program complete, no more code to execute.
-      document.getElementById('stepButton').disabled = 'disabled';
-      return;
-    }
-  }
-  if (highlightPause) {
-    // A block has been highlighted.  Pause execution here.
-    highlightPause = false;
-  } else {
-    // Keep executing until a highlight statement is reached.
-    stepCode();
-  }
 }

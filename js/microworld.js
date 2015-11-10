@@ -46,15 +46,28 @@ function Microworld(canvasElement, width, height) {
   var currentFrameInTimeVisibleMode = 0;
   var alphaBorder = 0.2; //initial alpha for last frames
 
-	var turtleImageFile = "media/costumes/cat1-a.gif";
+	//var turtleImageFile = "media/costumes/cat1-a.gif";
+  var turtleImageFile = "media/t0.png";
 	var turtles = []; // array containing all turtles
 	var currentTurtleIndex = 0; //point to the current turtle in the array
 	var currentTurtle = null;  //pointer to the current turtle
 
-
-
   function deg2rad(d) { return d / 180 * Math.PI; }
   function rad2deg(r) { return r * 180 / Math.PI; }
+  function makeid() {
+      var text = "";
+      var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+      for( var i=0; i < 5; i++ )
+          text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+      return text;
+  }
+
+  //microworld public properties
+  this.microworldName = "";
+  this.microworldAuthor = "";
+  this.microworldId = makeid();
 
   this.renderAtEachCommand = true;
 
@@ -70,8 +83,8 @@ function Microworld(canvasElement, width, height) {
 		this.visible = true;
 
 
-    //VALIDE ROTATION STYLES ARE FOLLOW, NONE
-    this.rotationStyle = "FOLLOW";
+    //VALIDE ROTATION STYLES ARE HEADING, NONE
+    this.rotationStyle = "HEADING";
 
     this.microworld = microworld;    //references the parant microworld
 
@@ -651,6 +664,20 @@ function Microworld(canvasElement, width, height) {
     height = h;
     init();
   };
+
+
+  this.save = function() {
+    var xml = Blockly.Xml.workspaceToDom(workspace);
+    function saveFormat(name, author) {
+      this.name = name;
+      this.author = author;
+      this.code = Blockly.Xml.domToText(xml);
+    }
+
+    var saveObj = new saveFormat(this.microworldName, this.microworldAuthor) ;
+
+    return JSON.stringify(saveObj);
+  }
 
   init();
   this.render();
