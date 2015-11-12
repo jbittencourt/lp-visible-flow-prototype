@@ -211,13 +211,13 @@ function Microworld(canvasParentSelector,width, height) {
       this.y = saved_y;
     }
 
-    if(this.renderAtEachCommand) this.render();
+
   };
 
   this.turn = function(angle) {
     this.r -= deg2rad(angle);
 
-    if(this.renderAtEachCommand) this.render();
+
   };
 
   this.penup = function() { this.down = false; };
@@ -273,18 +273,24 @@ function Microworld(canvasParentSelector,width, height) {
     this.color = color;
     penCanvas_ctx.strokeStyle = parseColor(this.color);
     penCanvas_ctx.fillStyle = parseColor(this.color);
+
+
   };
   this.getcolor = function() { return this.color; };
 
   this.setwidth = function(width) {
     this.width = width;
     penCanvas_ctx.lineWidth = this.width;
+
+
   };
   this.getwidth = function() { return this.width; };
 
   this.setfontsize = function(size) {
     this.fontsize = size;
     penCanvas_ctx.font = this.fontsize + 'px sans-serif';
+
+
   };
   this.getfontsize = function() { return this.fontsize; };
 
@@ -293,6 +299,7 @@ function Microworld(canvasParentSelector,width, height) {
     y = (y === undefined) ? this.y : -y + (height / 2);
 
     moveto(x, y);
+
   };
 
   this.towards = function(x, y) {
@@ -301,13 +308,13 @@ function Microworld(canvasParentSelector,width, height) {
 
     return 90 - rad2deg(Math.atan2(this.y - y, x - this.x));
 
-    if(this.renderAtEachCommand) this.render();
+
   };
 
   this.setheading = function(angle) {
     this.r = deg2rad(90 - angle);
 
-    if(this.renderAtEachCommand) this.render();
+
   };
 
   this.reset = function() {
@@ -322,13 +329,14 @@ function Microworld(canvasParentSelector,width, height) {
       canvasStoryStack = new Array();
       canvasStoryStack.push(turtleCanvas);
     }
+
   }
 
   this.clearscreen = function() {
     this.home();
     this.clear();
 
-    if(this.renderAtEachCommand) this.render();
+
   };
 
   this.clear = function() {
@@ -341,26 +349,26 @@ function Microworld(canvasParentSelector,width, height) {
       penCanvas_ctx.restore();
     }
 
-    if(this.renderAtEachCommand) this.render();
+
   };
 
   this.home = function() {
     moveto(width / 2, height / 2);
     this.r = deg2rad(90);
 
-    if(this.renderAtEachCommand) this.render();
+
   };
 
   this.showturtle = function() {
     currentTurtle.visible = true;
 
-    if(this.renderAtEachCommand) this.render();
+
   };
 
   this.hideturtle = function() {
     currentTurtle.visible = false;
 
-    if(this.renderAtEachCommand) this.render();
+
   };
 
   this.isturtlevisible = function() {
@@ -369,6 +377,7 @@ function Microworld(canvasParentSelector,width, height) {
 
   this.getheading = function() {
     return 90 - rad2deg(this.r);
+
   };
 
   this.getxy = function() {
@@ -382,7 +391,7 @@ function Microworld(canvasParentSelector,width, height) {
     penCanvas_ctx.fillText(text, 0, 0);
     penCanvas_ctx.restore();
 
-    if(this.renderAtEachCommand) this.render();
+
   };
 
   this.filling = 0;
@@ -393,6 +402,8 @@ function Microworld(canvasParentSelector,width, height) {
       ++this.filling;
       penCanvas_ctx.beginPath();
     }
+
+
   };
 
   this.fillpath = function(fillcolor) {
@@ -407,14 +418,14 @@ function Microworld(canvasParentSelector,width, height) {
       this.turtlemode = this.saved_turtlemode;
     }
 
-    if(this.renderAtEachCommand) this.render();
+
   };
 
   this.fill = function() {
     // TODO: implement flood fill funcion to canvas
     penCanvas_ctx.floodFill(this.x, this.y);
 
-    if(this.renderAtEachCommand) this.render();
+
   };
 
   this.arc = function(angle, radius) {
@@ -437,7 +448,7 @@ function Microworld(canvasParentSelector,width, height) {
         penCanvas_ctx.stroke();
     }
 
-    if(this.renderAtEachCommand) this.render();
+
   };
 
   this.getstate = function () {
@@ -496,8 +507,8 @@ function Microworld(canvasParentSelector,width, height) {
     canvasStoryStack.push(newTurtleCanvas);
 
 
-    // Erase turtle canvas content, but keeps its context
-    turtleCanvas_ctx.clearRect(0, 0, width, height);
+    // // Erase turtle canvas content, but keeps its context
+    // turtleCanvas_ctx.clearRect(0, 0, width, height);
 
 
     // Stub for old browsers w/ canvas but no text functions
@@ -520,15 +531,18 @@ function Microworld(canvasParentSelector,width, height) {
 			ctx.drawImage(turtle.turtleImage, dx, dy);
     }
 
-
+    //console.log("render"); console.trace();
     ctx.restore();
-
     updateRenderCanvas();
   };
 
 
   this.getTotalTime = function() {
     return canvasStoryStack.length;
+  }
+
+  this.getTime = function() {
+    return currentStotyStackPointer;
   }
 
   this.setTimeVisibleMode = function(visible) {
@@ -538,7 +552,6 @@ function Microworld(canvasParentSelector,width, height) {
 
   function updateRenderCanvas() {
     renderCanvas_ctx.clearRect(0,0,renderCanvas.width,renderCanvas.height);
-
     renderCanvas_ctx.drawImage(penCanvas,0,0);
 
     if(makeTimeVisibleMode) {
@@ -583,7 +596,6 @@ function Microworld(canvasParentSelector,width, height) {
 
 
     var alpha = alphaBorder;  //we start with an alpha different from 0 stored in this variable
-
     var canvas = canvasStoryStack[time];
     var ctx = canvas.getContext("2d");
     ctx.globalAlpha = 1;

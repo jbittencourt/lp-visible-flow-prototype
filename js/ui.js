@@ -41,6 +41,7 @@ function isTimeVisible() {
 function executeCode() {
   console.log("Executing code.")
 
+  currentworld.renderAtEachCommand = false;
   currentworld.reset();
 
   currentworld.setTimeVisibleMode(isTimeVisible());
@@ -66,6 +67,10 @@ $(function() {
 
   $('#runButton').click( function() {
       executeCode();
+  });
+
+  $('#stepButton').click( function() {
+      stepCode();
   });
 
 
@@ -149,6 +154,19 @@ function slideTime(event) {
     setCurrentStepLabel(slider.val());
 
     currentworld.refresh();
+}
+
+
+function stepCode() {
+  var slider = $("#programTimeSlider");
+  var value = parseInt(slider.val());
+
+  if(value!=null) {
+    value += 1;
+    slider.val(value);
+  }
+
+  slideTime(null);
 }
 
 

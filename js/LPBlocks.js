@@ -204,14 +204,25 @@ function lpInitApi(interpreter, scope) {
 }
 
 var time_block_mapping = new Array();
+var highlightPause = false;
 
 function highlightBlock(id) {
+  currentworld.render();
   time_block_mapping.push(id);
+      // console.log("pushed hightlht "+id.toString());
 }
 
 function lpHighlighBlockTime(time) {
- var block_id = time_block_mapping[time];
- workspace.highlightBlock(block_id);
+  // var block_id = null;
+  // for(var i=0; i<time_block_mapping.length; i++) {
+  //   var blocktime = time_block_mapping[i];
+  //   if (blocktime.time == time) {
+  //     block_id = blocktime.block;
+  //     break;
+  //   }
+  // }
+  var block_id = time_block_mapping[time-1];
+  workspace.highlightBlock(block_id);
 }
 
 function lpParseCode() {
@@ -234,4 +245,24 @@ function lpParseCode() {
 function lpRunCode() {
   time_block_mapping = new Array(); //empties the time_block map
   myInterpreter.run();
+}
+
+
+function lpStepCode() {
+  try {
+    var ok = myInterpreter.step();
+  } finally {
+    if (!ok) {
+      // Program complete, no more code to execute.
+      document.getElementById('stepButton').disabled = 'disabled';
+      return;
+    }
+  }
+  if (highlightPause) {
+    // A block has been highlighted.  Pause execution here.
+    highlightPause = false;
+  } else {
+    // Keep executing until a highlight statement is reached.
+    stepCode();
+  }
 }

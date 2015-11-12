@@ -62,30 +62,33 @@
               <div class="col s4">
                 <div id="stageControl">
                   <a class="btn-floating btn-large waves-effect waves-light red" id="runButton"><i class="material-icons">play_arrow</i></a>
+                  <a class="btn-floating waves-effect waves-light green" id="stepButton"><i class="material-icons">skip_next</i></a>
                 </div>
               </div>
               <div class="col s8">
-                  <form action="#">
-                      <div class="switch">
-                        Mostra passos:
-                        <label>
-                          Desligado<input id="isTimeVisible" type="checkbox">
-                          <span class="lever"></span>Ligado
-                        </label>
-                      </div>
-                  </form>
+                <div  id="stepsText">0 passos</div>
+                <form action="#">
+                  <p class="range-field">
+                    <input type="range" id="programTimeSlider" min="0" max="100" />
+                  </p>
+                </form>
+
               </div>
           </div>
 
 
           <div class="row">
-              <div class="col s2" id="stepsText">0 passos</div>
+              <div class="col s2" ></div>
               <div class="col s10">
-                  <form action="#">
-                    <p class="range-field">
-                      <input type="range" id="programTimeSlider" min="0" max="100" />
-                    </p>
-                  </form>
+                <form action="#">
+                    <div class="switch">
+                      Mostra passos:
+                      <label>
+                        Desligado<input id="isTimeVisible" type="checkbox">
+                        <span class="lever"></span>Ligado
+                      </label>
+                    </div>
+                </form>
               </div>
           </div>
 
