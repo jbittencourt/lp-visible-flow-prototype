@@ -8,7 +8,7 @@ var hue_category_pen = 230;
 Blockly.Blocks['controls_start'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("\u2691 Start");
+        .appendField(Turtle_Msg.GREEN_FLAG);
     this.setNextStatement(true);
     this.setColour(120);
     this.setTooltip('');
@@ -32,7 +32,7 @@ Blockly.Blocks['turtle_forward'] = {
   init: function() {
     this.appendValueInput("steps")
         .setCheck("Number")
-        .appendField("forward");
+        .appendField(Turtle_Msg.FORWARD);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour(210);
@@ -56,7 +56,7 @@ Blockly.Blocks['turtle_back'] = {
   init: function() {
     this.appendValueInput("steps")
         .setCheck("Number")
-        .appendField("back");
+        .appendField(Turtle_Msg.BACKWARD);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour(210);
@@ -80,7 +80,7 @@ Blockly.JavaScript['turtle_back'] = function(block) {
  Blockly.Blocks['turtle_right'] = {
    init: function() {
      this.appendDummyInput()
-         .appendField("right")
+         .appendField(Turtle_Msg.RIGHT)
          .appendField(new Blockly.FieldAngle("90"), "degrees")
      this.setPreviousStatement(true);
      this.setNextStatement(true);
@@ -102,7 +102,7 @@ Blockly.JavaScript['turtle_back'] = function(block) {
  Blockly.Blocks['turtle_left'] = {
    init: function() {
      this.appendDummyInput()
-         .appendField("left")
+         .appendField(Turtle_Msg.LEFT)
          .appendField(new Blockly.FieldAngle("90"), "degrees")
      this.setPreviousStatement(true);
      this.setNextStatement(true);
@@ -125,7 +125,7 @@ Blockly.JavaScript['turtle_back'] = function(block) {
  Blockly.Blocks['turtle_setpos'] = {
    init: function() {
      this.appendDummyInput()
-         .appendField("set position");
+         .appendField(Turtle_Msg.SET_POS);
      this.appendValueInput("x")
          .setCheck("Number")
          .appendField("x");
@@ -152,7 +152,7 @@ Blockly.JavaScript['turtle_setpos'] = function(block) {
 Blockly.Blocks['turtle_setposx'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("set position");
+        .appendField(Turtle_Msg.SET_POSX);
     this.appendValueInput("x")
         .setCheck("Number")
         .appendField("x");
@@ -176,7 +176,7 @@ Blockly.JavaScript['turtle_setposx'] = function(block) {
 Blockly.Blocks['turtle_setposy'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("set position");
+        .appendField(Turtle_Msg.SET_POSY);
     this.appendValueInput("y")
         .setCheck("Number")
         .appendField("y");
@@ -199,7 +199,7 @@ Blockly.JavaScript['turtle_setposy'] = function(block) {
 Blockly.Blocks['turtle_setheading'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("set heading")
+        .appendField(Turtle_Msg.SET_HEADING)
         .appendField(new Blockly.FieldAngle("90"), "degrees");
     this.setPreviousStatement(true);
     this.setInputsInline(true);
@@ -224,7 +224,7 @@ Blockly.JavaScript['turtle_setheading'] = function(block) {
  Blockly.Blocks['turtle_home'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("home");
+        .appendField(Turtle_Msg.HOME);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour(210);
@@ -243,7 +243,7 @@ Blockly.JavaScript['turtle_home'] = function(block) {
 Blockly.Blocks['turtle_show'] = {
  init: function() {
    this.appendDummyInput()
-       .appendField("show turtle");
+       .appendField(Turtle_Msg.SHOW_TURTLE);
    this.setPreviousStatement(true);
    this.setNextStatement(true);
    this.setColour(210);
@@ -262,7 +262,7 @@ Blockly.JavaScript['turtle_show'] = function(block) {
 Blockly.Blocks['turtle_hide'] = {
  init: function() {
    this.appendDummyInput()
-       .appendField("hide turtle");
+       .appendField(Turtle_Msg.HIDE_TURTLE);
    this.setPreviousStatement(true);
    this.setNextStatement(true);
    this.setColour(210);
@@ -281,7 +281,7 @@ Blockly.JavaScript['turtle_hide'] = function(block) {
 Blockly.Blocks['screen_clean'] = {
  init: function() {
    this.appendDummyInput()
-       .appendField("clean");
+       .appendField(Turtle_Msg.CLEAN);
    this.setPreviousStatement(true);
    this.setNextStatement(true);
    this.setColour(60);
@@ -300,7 +300,7 @@ Blockly.JavaScript['screen_clean'] = function(block) {
 Blockly.Blocks['screen_clearscreen'] = {
  init: function() {
    this.appendDummyInput()
-       .appendField("clear screen");
+       .appendField(Turtle_Msg.CLEAR_SCREEN);
    this.setPreviousStatement(true);
    this.setNextStatement(true);
    this.setColour(60);
@@ -320,7 +320,7 @@ Blockly.JavaScript['screen_clearscreen'] = function(block) {
 Blockly.Blocks['screen_wrap'] = {
  init: function() {
    this.appendDummyInput()
-       .appendField("wrap");
+       .appendField(Turtle_Msg.WRAP);
    this.setPreviousStatement(true);
    this.setNextStatement(true);
    this.setColour(60);
@@ -338,7 +338,7 @@ Blockly.JavaScript['screen_wrap'] = function(block) {
 Blockly.Blocks['screen_fence'] = {
  init: function() {
    this.appendDummyInput()
-       .appendField("fence");
+       .appendField(Turtle_Msg.FENCE);
    this.setPreviousStatement(true);
    this.setNextStatement(true);
    this.setColour(60);
@@ -356,7 +356,7 @@ Blockly.JavaScript['screen_fence'] = function(block) {
 Blockly.Blocks['screen_window'] = {
  init: function() {
    this.appendDummyInput()
-       .appendField("window");
+       .appendField(Turtle_Msg.WINDOW);
    this.setPreviousStatement(true);
    this.setNextStatement(true);
    this.setColour(60);
@@ -377,8 +377,8 @@ Blockly.JavaScript['screen_window'] = function(block) {
  Blockly.Blocks['turtle_arc'] = {
    init: function() {
      this.appendDummyInput()
-         .appendField("arc")
-         .appendField("angle")
+         .appendField(Turtle_Msg.ARC)
+         .appendField(Turtle_Msg.ANGLE)
          .appendField(new Blockly.FieldAngle("90"), "angle");
      this.appendValueInput("radius")
          .setCheck("Number")
@@ -407,7 +407,7 @@ Blockly.JavaScript['screen_window'] = function(block) {
  Blockly.Blocks['turtle_xcor'] = {
    init: function() {
      this.appendDummyInput()
-         .appendField("x coordinate");
+         .appendField(Turtle_Msg.X_COORDINATE);
      this.setOutput(true, "Number");
      this.setColour(210);
      this.setTooltip('');
@@ -423,7 +423,7 @@ Blockly.JavaScript['screen_window'] = function(block) {
 Blockly.Blocks['turtle_ycor'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("y coordinate");
+        .appendField(Turtle_Msg.Y_COORDINATE);
     this.setOutput(true, "Number");
     this.setColour(210);
     this.setTooltip('');
@@ -439,7 +439,7 @@ Blockly.JavaScript['turtle_ycor'] = function(block) {
 Blockly.Blocks['turtle_heading'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("heading");
+        .appendField(Turtle_Msg.HEADING);
     this.setOutput(true, "Number");
     this.setColour(210);
     this.setTooltip('');
@@ -456,7 +456,7 @@ Blockly.JavaScript['turtle_heading'] = function(block) {
 Blockly.Blocks['turtle_towards'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("set position");
+        .appendField(Turtle_Msg.TOWARDS);
     this.appendValueInput("x")
         .setCheck("Number")
         .appendField("x");
@@ -489,7 +489,7 @@ Blockly.JavaScript['turtle_towards'] = function(block) {
  Blockly.Blocks['pen_fill'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("fill");
+        .appendField(Turtle_Msg.FILL);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour(hue_category_pen);
@@ -508,7 +508,7 @@ Blockly.JavaScript['turtle_towards'] = function(block) {
    init: function() {
      this.appendValueInput("color")
          .setCheck("Number")
-        .appendField("set pen color to");
+        .appendField(Turtle_Msg.PENCOLOR);
      this.setColour(hue_category_pen);
      this.setPreviousStatement(true);
      this.setNextStatement(true);
@@ -528,7 +528,7 @@ Blockly.Blocks['pen_setpensize'] = {
   init: function() {
     this.appendValueInput("size")
         .setCheck("Number")
-        .appendField("set pen size to");
+        .appendField(Turtle_Msg.PENSIZE);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour(hue_category_pen);
@@ -547,7 +547,7 @@ Blockly.JavaScript['pen_setpensize'] = function(block) {
 Blockly.Blocks['pen_setpenup'] = {
  init: function() {
    this.appendDummyInput()
-       .appendField("pen up");
+       .appendField(Turtle_Msg.PENUP);
    this.setPreviousStatement(true);
    this.setNextStatement(true);
    this.setColour(hue_category_pen);
@@ -565,7 +565,7 @@ Blockly.JavaScript['pen_setpenup'] = function(block) {
 Blockly.Blocks['pen_setpendown'] = {
  init: function() {
    this.appendDummyInput()
-       .appendField("pen down");
+       .appendField(Turtle_Msg.PENDOWN);
    this.setPreviousStatement(true);
    this.setNextStatement(true);
    this.setColour(hue_category_pen);
@@ -582,7 +582,7 @@ Blockly.JavaScript['pen_setpendown'] = function(block) {
 Blockly.Blocks['pen_ispendown?'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("is pen down?");
+        .appendField(Turtle_Msg.IS_PENUP);
     this.setOutput(true, "Boolean");
     this.setColour(hue_category_pen);
     this.setTooltip('');
@@ -598,7 +598,7 @@ Blockly.JavaScript['pen_ispendown?'] = function(block) {
 Blockly.Blocks['pen_pencolor'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("pen color");
+        .appendField(Turtle_Msg.GET_PENCOLOR);
     this.setOutput(true, "Boolean");
     this.setColour(hue_category_pen);
     this.setTooltip('');
@@ -614,7 +614,7 @@ Blockly.JavaScript['pen_pencolor'] = function(block) {
 Blockly.Blocks['pen_pensize'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("pen size");
+        .appendField(Turtle_Msg.GET_PENSIZE);
     this.setOutput(true, "Boolean");
     this.setColour(hue_category_pen);
     this.setTooltip('');

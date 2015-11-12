@@ -22,7 +22,8 @@
   <script src="blockly/msg/js/pt-br.js"></script>
   <script src="blockly/javascript_compressed.js"></script>
 
-
+  <script src="js/msg.js"></script>
+  <script src="js/msg/pt-br.js"></script>
   <script src="js/TurtleBlocks.js"></script>
   <script src="js/LPBlocks.js"></script>
   <script src="js/microworld_procedural_bindings.js"></script>
@@ -103,7 +104,7 @@
 
   <xml id="toolbox" style="display: none">
 
-    <category name="Movimento">
+    <category name="Tartaruga">
       <block type="turtle_forward">
         <value name="steps">
           <block type="math_number">
@@ -226,7 +227,7 @@
 -->
 
     <category name="Variáveis" custom="VARIABLE"></category>
-    <category name="Funções" custom="PROCEDURE"></category>
+    <category name="Ensinar" custom="PROCEDURE"></category>
   </xml>
 
 <xml id="demo"><block type="turtle_home" x="92" y="60"><next><block type="pen_setpencolor"><value name="color"><block type="math_number"><field name="NUM">45</field></block></value><next><block type="controls_repeat_ext"><value name="TIMES"><block type="math_number"><field name="NUM">6</field></block></value><statement name="DO"><block type="procedures_callnoreturn"><mutation name="quadrado"></mutation><next><block type="turtle_right"><field name="degrees">60</field></block></next></block></statement></block></next></block></next></block><block type="procedures_defnoreturn" x="378" y="245"><field name="NAME">quadrado</field><statement name="STACK"><block type="controls_repeat_ext"><value name="TIMES"><block type="math_number"><field name="NUM">4</field></block></value><statement name="DO"><block type="turtle_forward"><value name="steps"><block type="math_number"><field name="NUM">100</field></block></value><next><block type="turtle_right"><field name="degrees">90</field></block></next></block></statement></block></statement></block></xml>
