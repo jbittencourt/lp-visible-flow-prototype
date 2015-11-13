@@ -51,6 +51,9 @@ function Microworld(canvasParentSelector,width, height) {
   var canvasStoryStack = new Array();
   var currentStotyStackPointer = 0;
 
+  var canvasPenStack = new Array();
+  var currentPenStackPointer = 0;
+
   //control canvas play in time visible mode
   var currentFrameInTimeVisibleMode = 0;
   var alphaBorder = 0.2; //initial alpha for last frames
@@ -273,9 +276,8 @@ function Microworld(canvasParentSelector,width, height) {
     this.color = color;
     penCanvas_ctx.strokeStyle = parseColor(this.color);
     penCanvas_ctx.fillStyle = parseColor(this.color);
-
-
   };
+
   this.getcolor = function() { return this.color; };
 
   this.setwidth = function(width) {
@@ -506,15 +508,8 @@ function Microworld(canvasParentSelector,width, height) {
 
     canvasStoryStack.push(newTurtleCanvas);
 
-
-    // // Erase turtle canvas content, but keeps its context
-    // turtleCanvas_ctx.clearRect(0, 0, width, height);
-
-
     // Stub for old browsers w/ canvas but no text functions
-    //penCanvas_ctx.fillText = penCanvas_ctx.fillText || function fillText(string, x, y) { };
 		var turtle = currentTurtle;
-
 
     ctx.save();
     ctx.translate(this.x, this.y);
@@ -534,6 +529,31 @@ function Microworld(canvasParentSelector,width, height) {
     //console.log("render"); console.trace();
     ctx.restore();
     updateRenderCanvas();
+
+    // // Erase turtle canvas content, but keeps its context
+    // turtleCanvas_ctx.clearRect(0, 0, width, height);
+    currentPenStackPointer = canvasPenStack.length;
+
+    var previousPenCanvas = canvasPenStack[currentPenStackPointer-1]; //get last canvas
+
+    // newPenCanvas = document.createElement("CANVAS");
+    newPenCanvas = document.createElement("CANVAS");
+    newPenCanvas.id = "mwPenCanvas_"+currentPenStackPointer.toString();
+    newPenCanvas.width = width;
+    newPenCanvas.height = height;
+    newPenCanvas.style.display = "none";
+    document.body.appendChild(newPenCanvas);
+    //penCanvasSetup(newPenCanvas);
+
+    //ctx_pen = newPenCanvas.getContext('2d');
+    ctx_pen = self.penCanvasSetup(newPenCanvas);
+    ctx_pen.drawImage(penCanvas,0,0);
+
+
+    canvasPenStack.push(newPenCanvas);
+
+    penCanvas = newPenCanvas;
+    penCanvas_ctx = ctx_pen;
   };
 
 
@@ -619,6 +639,11 @@ function Microworld(canvasParentSelector,width, height) {
       alpha -= descrecentAlphaIncrement;
     }
 
+
+    //set the current pen canvas
+    penCanvas = canvasPenStack[time+1];
+    penCanvas_ctx = penCanvas.getContext("2d");
+
     updateRenderCanvas();
 
   }
@@ -656,22 +681,13 @@ function Microworld(canvasParentSelector,width, height) {
 		penCanvas.height = height;
 		penCanvas.style.display = "none";
 		document.body.appendChild(penCanvas);
-		penCanvas_ctx = penCanvas.getContext('2d');
+		penCanvas_ctx = self.penCanvasSetup(penCanvas);
+
+    canvasPenStack.push(penCanvas);
 
 		turtleCanvas_ctx.lineCap = 'round';
 		turtleCanvas_ctx.strokeStyle = 'green';
 		turtleCanvas_ctx.lineWidth = 2;
-
-		penCanvas_ctx.lineCap = 'round';
-
-		penCanvas_ctx.strokeStyle = parseColor(this.color);
-		penCanvas_ctx.fillStyle = parseColor(this.color);
-		penCanvas_ctx.lineWidth = this.width;
-		penCanvas_ctx.font = this.fontsize + 'px sans-serif';
-		penCanvas_ctx.globalCompositeOperation =
-			(self.penmode === 'erase') ? 'destination-out' :
-			(self.penmode === 'reverse') ? 'xor' : 'source-over';
-
 
 		//creates first turtle 0
 		var turtle0 = new Turtle("0",turtleImageFile,self);
@@ -686,6 +702,21 @@ function Microworld(canvasParentSelector,width, height) {
     init();
   };
 
+  this.penCanvasSetup = function(canvas) {
+    var canvas_ctx = canvas.getContext('2d');
+    canvas_ctx.lineCap = 'round';
+
+    canvas_ctx.strokeStyle = parseColor(this.color);
+    canvas_ctx.fillStyle = parseColor(this.color);
+    canvas_ctx.lineWidth = this.width;
+    canvas_ctx.font = this.fontsize + 'px sans-serif';
+    canvas_ctx.globalCompositeOperation =
+      (self.penmode === 'erase') ? 'destination-out' :
+      (self.penmode === 'reverse') ? 'xor' : 'source-over';
+
+
+    return canvas_ctx;
+  }
 
 
   init();
