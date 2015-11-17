@@ -45,6 +45,8 @@ function Microworld(canvasParentSelector,width, height) {
 
 	var initilized = false;
 
+  var logToConsole = false;
+
 
   //enables the make time visible mode
   var makeTimeVisibleMode = true;
@@ -127,6 +129,7 @@ function Microworld(canvasParentSelector,width, height) {
           _go(self.x, self.y, x, y);
           self.x = x;
           self.y = y;
+          if(self.renderAtEachCommand) self.drawTurtle();
           return;
 
         default:
@@ -175,16 +178,19 @@ function Microworld(canvasParentSelector,width, height) {
 
           _go(self.x, self.y, ix, iy);
 
+
           if (self.turtlemode === 'fence') {
             // FENCE - stop on collision
             self.x = ix;
             self.y = iy;
+            if(self.renderAtEachCommand) self.drawTurtle();
             return;
           } else {
             // WRAP - keep going
             self.x = wx;
             self.y = wy;
             if (fx === 1 && fy === 1) {
+              if(self.renderAtEachCommand) self.drawTurtle();
               return;
             }
           }
@@ -192,10 +198,13 @@ function Microworld(canvasParentSelector,width, height) {
           break;
       }
     }
+
   }
 
   this.move = function(distance) {
     var x, y, point, saved_x, saved_y, EPSILON = 1e-3;
+
+    if(logToConsole) console.log("Move "+distance.toString());
 
     point = Math.abs(distance) < EPSILON;
 
@@ -220,7 +229,7 @@ function Microworld(canvasParentSelector,width, height) {
   this.turn = function(angle) {
     this.r -= deg2rad(angle);
 
-
+    if(self.renderAtEachCommand) self.drawTurtle();
   };
 
   this.penup = function() { this.down = false; };
@@ -316,28 +325,42 @@ function Microworld(canvasParentSelector,width, height) {
   this.setheading = function(angle) {
     this.r = deg2rad(90 - angle);
 
-
+    if(self.renderAtEachCommand) self.drawTurtle();
   };
 
   this.reset = function() {
-    turtleCanvas = canvasStoryStack[0];
+    turtleCanvas = canvasStoryStack[canvasStoryStack.length-1];
+    turtleCanvas.id = "mwTurtleCanvas";
+    turtleCanvas_ctx = turtleCanvas.getContext("2d");
 
-    if(makeTimeVisibleMode) {
-      //remove all canvases from the document so we don't overflow the memory
-      canvasStoryStack.forEach(function(canvas) {
-        if(canvas!=turtleCanvas) canvas.parentNode.removeChild(canvas);  //avoid removing the initial canvas
-      });
+    penCanvas = canvasPenStack[canvasPenStack.length-1];
+    penCanvas.id = "mwPenCanvas";
+    penCanvas_ctx = penCanvas.getContext("2d");
 
-      canvasStoryStack = new Array();
-      canvasStoryStack.push(turtleCanvas);
-    }
+    //remove all canvases from the document so we don't overflow the memory
+    canvasPenStack.forEach(function(canvas) {
+      if(canvas!=penCanvas) canvas.parentNode.removeChild(canvas);  //avoid removing the initial canvas
+    });
+
+    //remove all canvases from the document so we don't overflow the memory
+    canvasStoryStack.forEach(function(canvas) {
+      if(canvas!=turtleCanvas) canvas.parentNode.removeChild(canvas);  //avoid removing the initial canvas
+    });
+
+    canvasStoryStack = new Array();
+    canvasStoryStack.push(turtleCanvas);
+
+    canvasPenStack = new Array();
+    canvasPenStack.push(penCanvas);
+
+    currentStotyStackPointer = 0;
+    currentPenStackPointer = 0;
 
   }
 
   this.clearscreen = function() {
     this.home();
     this.clear();
-
 
   };
 
@@ -351,7 +374,7 @@ function Microworld(canvasParentSelector,width, height) {
       penCanvas_ctx.restore();
     }
 
-
+    if(self.renderAtEachCommand) self.drawTurtle();
   };
 
   this.home = function() {
@@ -364,12 +387,12 @@ function Microworld(canvasParentSelector,width, height) {
   this.showturtle = function() {
     currentTurtle.visible = true;
 
-
+    if(self.renderAtEachCommand) self.drawTurtle();
   };
 
   this.hideturtle = function() {
     currentTurtle.visible = false;
-
+    if(self.renderAtEachCommand) self.drawTurtle();
 
   };
 
@@ -393,7 +416,7 @@ function Microworld(canvasParentSelector,width, height) {
     penCanvas_ctx.fillText(text, 0, 0);
     penCanvas_ctx.restore();
 
-
+    if(self.renderAtEachCommand) self.drawTurtle();
   };
 
   this.filling = 0;
@@ -420,7 +443,7 @@ function Microworld(canvasParentSelector,width, height) {
       this.turtlemode = this.saved_turtlemode;
     }
 
-
+    if(self.renderAtEachCommand) self.drawTurtle();
   };
 
   this.fill = function() {
@@ -450,7 +473,7 @@ function Microworld(canvasParentSelector,width, height) {
         penCanvas_ctx.stroke();
     }
 
-
+    if(self.renderAtEachCommand) self.drawTurtle();
   };
 
   this.getstate = function () {
@@ -489,27 +512,12 @@ function Microworld(canvasParentSelector,width, height) {
     }
   };
 
-	this.render = function() {
-
+  this.drawTurtle = function() {
+    if(logToConsole) console.log("Drawing turtle");
+    // Stub for old browsers w/ canvas but no text functions
     var ctx = turtleCanvas_ctx;
 
-    //Create 2 adictional canvas
-    currentStotyStackPointer = canvasStoryStack.length;
-
-    var previousCanvas = canvasStoryStack[currentStotyStackPointer-1]; //get last canvas
-
-    newTurtleCanvas = document.createElement("CANVAS");
-		newTurtleCanvas.id = "mwTurtleCanvas_"+currentStotyStackPointer.toString();
-		newTurtleCanvas.width = width;
-		newTurtleCanvas.height = height;
-		newTurtleCanvas.style.display = "none";
-		document.body.appendChild(newTurtleCanvas);
-		ctx = newTurtleCanvas.getContext('2d');
-
-    canvasStoryStack.push(newTurtleCanvas);
-
-    // Stub for old browsers w/ canvas but no text functions
-		var turtle = currentTurtle;
+    var turtle = currentTurtle;
 
     ctx.save();
     ctx.translate(this.x, this.y);
@@ -521,14 +529,35 @@ function Microworld(canvasParentSelector,width, height) {
     dx = -(turtle.turtleImage.width / 2);
     dy = -(turtle.turtleImage.height / 2);
 
-
     if (turtle.visible) {
-			ctx.drawImage(turtle.turtleImage, dx, dy);
+      ctx.drawImage(turtle.turtleImage, dx, dy);
     }
 
-    //console.log("render"); console.trace();
     ctx.restore();
+
+  }
+
+	this.render = function() {
+
+    self.drawTurtle();
     updateRenderCanvas();
+
+    newTurtleCanvas = document.createElement("CANVAS");
+    newTurtleCanvas.id = "mwTurtleCanvas_"+makeid();
+    newTurtleCanvas.width = width;
+    newTurtleCanvas.height = height;
+    newTurtleCanvas.style.display = "none";
+    document.body.appendChild(newTurtleCanvas);
+
+    canvasStoryStack.push(newTurtleCanvas);
+
+    //Create 2 adictional canvas
+    currentStotyStackPointer = canvasStoryStack.length;
+
+    turtleCanvas = newTurtleCanvas;
+    turtleCanvas_ctx = newTurtleCanvas.getContext('2d');
+
+
 
     // // Erase turtle canvas content, but keeps its context
     // turtleCanvas_ctx.clearRect(0, 0, width, height);
@@ -536,16 +565,13 @@ function Microworld(canvasParentSelector,width, height) {
 
     var previousPenCanvas = canvasPenStack[currentPenStackPointer-1]; //get last canvas
 
-    // newPenCanvas = document.createElement("CANVAS");
     newPenCanvas = document.createElement("CANVAS");
-    newPenCanvas.id = "mwPenCanvas_"+currentPenStackPointer.toString();
+    newPenCanvas.id = "mwPenCanvas_"+makeid();
     newPenCanvas.width = width;
     newPenCanvas.height = height;
     newPenCanvas.style.display = "none";
     document.body.appendChild(newPenCanvas);
-    //penCanvasSetup(newPenCanvas);
 
-    //ctx_pen = newPenCanvas.getContext('2d');
     ctx_pen = self.penCanvasSetup(newPenCanvas);
     ctx_pen.drawImage(penCanvas,0,0);
 
@@ -554,6 +580,8 @@ function Microworld(canvasParentSelector,width, height) {
 
     penCanvas = newPenCanvas;
     penCanvas_ctx = ctx_pen;
+
+
   };
 
 
@@ -591,6 +619,9 @@ function Microworld(canvasParentSelector,width, height) {
         renderCanvas_ctx.drawImage(canvas,0,0);
       })
     } else {
+      if(logToConsole) console.log("Rendering turtle canvas");
+      if(logToConsole) console.log(turtleCanvas);
+      turtleCanvas_ctx.globalAlpha = 1;
       renderCanvas_ctx.drawImage(turtleCanvas,0,0);
     }
   }
@@ -602,18 +633,17 @@ function Microworld(canvasParentSelector,width, height) {
 
   this.setPlayTime = function(time) {
     var stackSize = canvasStoryStack.length;
-
-    if((time<0) | (time>stackSize)) {
+    if(logToConsole) console.log(time);
+    if((time<0) | (time>stackSize+1)) {
       throw "Time values must be between 0 and "+stackSize.toString();
       return 0;
     }
 
-
+    //time = time -1;
     var limitAlpha = 0.2;
     var stackSize = canvasStoryStack.length;
     var crescentAlphaIncrement = (limitAlpha-alphaBorder)/time;
     var descrecentAlphaIncrement = (limitAlpha-alphaBorder)/(stackSize-time);
-
 
     var alpha = alphaBorder;  //we start with an alpha different from 0 stored in this variable
     var canvas = canvasStoryStack[time];
@@ -621,6 +651,7 @@ function Microworld(canvasParentSelector,width, height) {
     ctx.globalAlpha = 1;
 
     turtleCanvas = canvas;
+    turtleCanvas_ctx = ctx;
 
     for(var i=0; i<time; i++) {
       canvas = canvasStoryStack[i];
@@ -641,8 +672,11 @@ function Microworld(canvasParentSelector,width, height) {
 
 
     //set the current pen canvas
-    penCanvas = canvasPenStack[time+1];
+    penCanvas = canvasPenStack[time];
     penCanvas_ctx = penCanvas.getContext("2d");
+
+    if(logToConsole) console.log(canvasStoryStack); if(logToConsole) console.log(turtleCanvas);
+    if(logToConsole) console.log(canvasPenStack); if(logToConsole) console.log(penCanvas);
 
     updateRenderCanvas();
 
@@ -671,9 +705,7 @@ function Microworld(canvasParentSelector,width, height) {
 		document.body.appendChild(turtleCanvas);
 		turtleCanvas_ctx = turtleCanvas.getContext('2d');
 
-    if(makeTimeVisibleMode) {
-      canvasStoryStack.push(turtleCanvas);
-    }
+    canvasStoryStack.push(turtleCanvas);
 
 		penCanvas = document.createElement("CANVAS");
 		penCanvas.id = "mwPenCanvas";
@@ -694,6 +726,8 @@ function Microworld(canvasParentSelector,width, height) {
 		turtles.push(turtle0);
 
 		currentTurtle = turtles[currentTurtleIndex];
+
+    self.drawTurtle(turtleCanvas_ctx);
   }
 
   this.resize = function(w, h) {

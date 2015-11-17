@@ -41,7 +41,7 @@ function isTimeVisible() {
 function executeCode() {
   console.log("Executing code.")
 
-  currentworld.renderAtEachCommand = false;
+  currentworld.renderAtEachCommand = true;
   currentworld.reset();
 
   currentworld.setTimeVisibleMode(isTimeVisible());
@@ -136,7 +136,7 @@ function initUI() {
      {media: 'blockly/media/',
       toolbox: document.getElementById('toolbox')});
 
-  Blockly.Xml.domToWorkspace(workspace,  document.getElementById('demo') );
+  //Blockly.Xml.domToWorkspace(workspace,  document.getElementById('demo') );
 
   workspace.addChangeListener(lpParseCode);
 

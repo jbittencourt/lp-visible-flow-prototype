@@ -209,7 +209,6 @@ var highlightPause = false;
 function highlightBlock(id) {
   currentworld.render();
   time_block_mapping.push(id);
-      // console.log("pushed hightlht "+id.toString());
 }
 
 function lpHighlighBlockTime(time) {
@@ -221,7 +220,7 @@ function lpHighlighBlockTime(time) {
   //     break;
   //   }
   // }
-  var block_id = time_block_mapping[time-1];
+  var block_id = time_block_mapping[time];
   workspace.highlightBlock(block_id);
 }
 
@@ -244,6 +243,7 @@ function lpParseCode() {
 
 function lpRunCode() {
   time_block_mapping = new Array(); //empties the time_block map
+  lpParseCode();
   myInterpreter.run();
 }
 

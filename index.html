@@ -204,7 +204,13 @@
 
     <category name="Caneta">
 
-      <block type="pen_setpencolor"></block>
+      <block type="pen_setpencolor">
+        <value name="color">
+          <block type="math_number">
+            <field name="NUM">100</field>
+          </block>
+        </value>
+      </block>
       <block type="pen_setpensize">
         <value name="size">
           <block type="math_number">
@@ -220,20 +226,21 @@
       <block type="pen_pensize"></block>
     </category>
 
-<!--    <category name="Screen">
+    <category name="Tela">
       <block type="screen_clean"></block>
       <block type="screen_clearscreen"></block>
-      <block type="screen_wrap"></block>
+<!--      <block type="screen_wrap"></block>
       <block type="screen_window"></block>
       <block type="screen_fence"></block>
+    -->
+
     </category>
--->
 
     <category name="Variáveis" custom="VARIABLE"></category>
     <category name="Ensinar" custom="PROCEDURE"></category>
   </xml>
 
-<xml id="demo"><block type="turtle_home" x="92" y="60"><next><block type="pen_setpencolor"><value name="color"><block type="math_number"><field name="NUM">45</field></block></value><next><block type="controls_repeat_ext"><value name="TIMES"><block type="math_number"><field name="NUM">6</field></block></value><statement name="DO"><block type="procedures_callnoreturn"><mutation name="quadrado"></mutation><next><block type="turtle_right"><field name="degrees">60</field></block></next></block></statement></block></next></block></next></block><block type="procedures_defnoreturn" x="378" y="245"><field name="NAME">quadrado</field><statement name="STACK"><block type="controls_repeat_ext"><value name="TIMES"><block type="math_number"><field name="NUM">4</field></block></value><statement name="DO"><block type="turtle_forward"><value name="steps"><block type="math_number"><field name="NUM">100</field></block></value><next><block type="turtle_right"><field name="degrees">90</field></block></next></block></statement></block></statement></block></xml>
+<!-- <xml id="demo"><block type="turtle_home" x="92" y="60"><next><block type="pen_setpencolor"><value name="color"><block type="math_number"><field name="NUM">45</field></block></value><next><block type="controls_repeat_ext"><value name="TIMES"><block type="math_number"><field name="NUM">6</field></block></value><statement name="DO"><block type="procedures_callnoreturn"><mutation name="quadrado"></mutation><next><block type="turtle_right"><field name="degrees">60</field></block></next></block></statement></block></next></block></next></block><block type="procedures_defnoreturn" x="378" y="245"><field name="NAME">quadrado</field><statement name="STACK"><block type="controls_repeat_ext"><value name="TIMES"><block type="math_number"><field name="NUM">4</field></block></value><statement name="DO"><block type="turtle_forward"><value name="steps"><block type="math_number"><field name="NUM">100</field></block></value><next><block type="turtle_right"><field name="degrees">90</field></block></next></block></statement></block></statement></block></xml> -->
 <!--
   <xml id="demo" xmlns="http://www.w3.org/1999/xhtml"><block type="controls_repeat_ext" x="171" y="143"><value name="TIMES"><block type="math_number"><field name="NUM">15</field></block></value><statement name="DO"><block type="turtle_forward"><value name="steps"><block type="math_number"><field name="NUM">50</field></block></value><next><block type="turtle_right"><field name="degrees">30</field></block></next></block></statement></block></xml>
 s -->
