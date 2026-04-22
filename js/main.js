@@ -653,14 +653,18 @@ function executeCode() {
 
   lpRunCode();
   const runFrames = window.currentworld.getTotalTime();
-  window.currentworld.setPlayTime(runFrames - 1);
-  setStepsLabel(runFrames);
+  // The last entry in canvasStoryStack is always an empty canvas created
+  // by the final render() call. The last frame with content is at index
+  // runFrames-2, so we use that for both display and the slider max.
+  const lastValidFrame = Math.max(0, runFrames - 2);
+  window.currentworld.setPlayTime(lastValidFrame);
+  setStepsLabel(lastValidFrame + 1);
 
   const slider = document.getElementById('programTimeSlider');
-  slider.max = runFrames;
+  slider.max = lastValidFrame + 1;
   slider.min = 1;
   slider.step = 1;
-  slider.value = runFrames;
+  slider.value = lastValidFrame + 1;
   slider.disabled = false;
   } catch(e) { console.error('executeCode error:', e); alert('Erro ao executar: ' + e.message); }
 }
