@@ -60,6 +60,18 @@ body {
 
 /* customize blockly elements */
 
+/* Reset box-sizing for Blockly: Materialize's global border-box breaks
+   Blockly's internal dimension/coordinate calculations (flyout, workspace). */
+#blocklyDiv {
+  box-sizing: content-box;
+}
+
+#blocklyDiv *, #blocklyDiv *:before, #blocklyDiv *:after,
+.blocklyToolboxDiv, .blocklyToolboxDiv *,
+.blocklyWidgetDiv, .blocklyWidgetDiv * {
+  box-sizing: content-box;
+}
+
 .blocklyToolboxDiv {
   background-color: #b3e5fc !important;
 }

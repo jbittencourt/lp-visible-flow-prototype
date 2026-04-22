@@ -63,7 +63,7 @@ function executeCode() {
   console.log("Set slider to max "+runFrames.toString());
 }
 
-$(function() {
+$(window).on('load', function() {
 
   $('#runButton').click( function() {
       executeCode();
@@ -134,11 +134,25 @@ function initUI() {
 
   workspace = Blockly.inject('blocklyDiv',
      {media: 'blockly/media/',
+      sound: false,
       toolbox: document.getElementById('toolbox')});
 
   //Blockly.Xml.domToWorkspace(workspace,  document.getElementById('demo') );
 
   workspace.addChangeListener(lpParseCode);
+
+  setTimeout(function() { Blockly.svgResize(workspace); }, 0);
+
+  // hideChaff() with no argument checks flyout.autoClose and calls
+  // clearSelection(), closing the toolbox flyout on every workspace/block
+  // mousedown — before the user can drag a block out. The toolbox manages
+  // its own lifecycle through tree SELECT events, so clearSelection from
+  // hideChaff is unnecessary and harmful here.
+  Blockly.hideChaff = function() {
+    Blockly.Tooltip && Blockly.Tooltip.hide();
+    Blockly.WidgetDiv && Blockly.WidgetDiv.hide();
+  };
+  window.addEventListener('resize', function() { Blockly.svgResize(workspace); });
 
   //init the turtle geometry microworldDiv
   var canvasParent = $(currentworldFrameSelector);
